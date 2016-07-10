@@ -22,6 +22,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var genderLabel: UILabel!
     
     
+    var photosObjects = [Photos]()
     
     
     //MARK: TableView Code
@@ -29,19 +30,29 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         return photosObjects.count
     }
     
+    
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = photosTableView.dequeueReusableCellWithIdentifier("photoCellIdentifier") as! photosCell
+        let cellObjectsContainer = photosObjects[indexPath.row]
         
         
-        let photoContainer = photosObjects[indexPath.row]
-        cell.originLabel.text = photoContainer.photoOrigin
-        let url = NSURL(string: photoContainer.photoURL)
-        cell.photoImageView.af_setImageWithURL(url!)
+        cell.originLabel.text = cellObjectsContainer.photoOrigin
+        // if theres a url, store it in the "url" constant. the string comes from
+        
+         let url = NSURL(string: cellObjectsContainer.photoURL!)
+          cell.photoImageView.af_setImageWithURL(url!)
+       
+        
+  
         
         
-                cell.socialLabel.text = photoContainer.social
-                cell.usernameLabel.text = photoContainer.username
-                cell.linkLabel.text = photoContainer.link
+        
+        
+//
+//        cell.socialLabel.text = photoContainer.social
+//        cell.usernameLabel.text = photoContainer.username
+//        cell.linkLabel.text = photoContainer.link
         return cell
     }
     //End of TableView code
@@ -49,7 +60,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
 
     
-    var photosObjects = [Photos]()
+
     
 
     @IBOutlet weak var emailTextField: UITextField!
@@ -70,6 +81,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         //location
                         let demographics = data["demographics"]["locationDeduced"]["deducedLocation"].stringValue
                         print(demographics)
+                   
                         
                         //gender
                         let gender = data["demographics"]["gender"].stringValue
@@ -80,42 +92,38 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         let name = data["contactInfo"]["fullName"]
                         self.nameLabel.text = String(name)
                         print(name)
-//
-//                        
+
                         
                         
                         
                         
-//                       // MARK: loop social profiles
+                        
+                       // MARK: loop social profiles
                         for (_, subJson) in json["socialProfiles"] {
                             
                             let newPhotoModelInstance = Photos()
                             
                             if let type = subJson["type"].string {
-//                                print(type)
                                 newPhotoModelInstance.social = type
                                 print("The social network type value : \(newPhotoModelInstance.social) has been added")
                             } else {
-                                
-                                print("the 'type' value was not added")
+                                newPhotoModelInstance.social = "Not available"
                             }
                             
                         
                             if let username = subJson["username"].string {
-//                                print(username)
                                 newPhotoModelInstance.username = username
                                 print("the username value: \(newPhotoModelInstance.username) was added")
                             } else {
-                                    print("The 'username' value was not added")
+                                newPhotoModelInstance.username = "Not available"
                             }
                             
                             
                             if let url = subJson["url"].string {
-//                                print(url)
                                 newPhotoModelInstance.link = url
                                 print("the url value : \(newPhotoModelInstance.link) has been added")
                             } else {
-                                print("The 'url' value was not added")
+                                newPhotoModelInstance.link = "Not available"
                             }
                             
                             
@@ -123,7 +131,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             self.photosObjects.append(newPhotoModelInstance)
 
 
-                            
+
                     }
                         
                         

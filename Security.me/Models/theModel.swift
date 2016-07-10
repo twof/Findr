@@ -9,7 +9,7 @@
 import Foundation
 
 class Photos {
-    var photoURL : String!
+    var photoURL : String?
     var photoOrigin : String!
     var social : String!
     var username : String!
