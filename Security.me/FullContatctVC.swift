@@ -22,37 +22,35 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var genderLabel: UILabel!
     
     
-    var photosObjects = [Photos]()
+    var modelObjects = [Photos]()
     
     
     //MARK: TableView Code
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosObjects.count
+        return modelObjects.count
     }
     
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = photosTableView.dequeueReusableCellWithIdentifier("photoCellIdentifier") as! photosCell
-        let cellObjectsContainer = photosObjects[indexPath.row]
-        
-        
+        let cellObjectsContainer = modelObjects[indexPath.row]
         cell.originLabel.text = cellObjectsContainer.photoOrigin
-        // if theres a url, store it in the "url" constant. the string comes from
-        
-         let url = NSURL(string: cellObjectsContainer.photoURL!)
-          cell.photoImageView.af_setImageWithURL(url!)
+      
        
+        let url = NSURL(string: cellObjectsContainer.photoURL)
+
+        cell.photoImageView.af_setImageWithURL(url!)
+       
+
         
-  
         
         
         
-        
-//
-//        cell.socialLabel.text = photoContainer.social
-//        cell.usernameLabel.text = photoContainer.username
-//        cell.linkLabel.text = photoContainer.link
+
+        cell.socialLabel.text = cellObjectsContainer.social
+        cell.usernameLabel.text = cellObjectsContainer.username
+        cell.linkLabel.text = cellObjectsContainer.link
         return cell
     }
     //End of TableView code
@@ -102,6 +100,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         for (_, subJson) in json["socialProfiles"] {
                             
                             let newPhotoModelInstance = Photos()
+
                             
                             if let type = subJson["type"].string {
                                 newPhotoModelInstance.social = type
@@ -128,7 +127,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             
                             
                            
-                            self.photosObjects.append(newPhotoModelInstance)
+                            self.modelObjects.append(newPhotoModelInstance)
 
 
 
@@ -143,7 +142,6 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             
                             let photoModelInstance = Photos()
                             
-                            
                             if let type = subJson["type"].string {
                                 print(type)
                                 photoModelInstance.photoOrigin = type
@@ -154,7 +152,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 photoModelInstance.photoURL = url
                             }
                             
-                            self.photosObjects.append(photoModelInstance)
+                            self.modelObjects.append(photoModelInstance)
 
                             
                     }

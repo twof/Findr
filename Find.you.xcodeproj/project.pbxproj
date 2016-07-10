@@ -54,7 +54,7 @@
 		257E4C841D2DA0A5009414D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		257E4C961D2EA859009414D6 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; };
 		257E4C991D2ECC74009414D6 /* PasswordCheckerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordCheckerVC.swift; sourceTree = "<group>"; };
-		257E4C9B1D2ECFFA009414D6 /* FullContatctVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullContatctVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		257E4C9B1D2ECFFA009414D6 /* FullContatctVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullContatctVC.swift; sourceTree = "<group>"; };
 		25EFFD9B1D2F666700F6C6AA /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		25EFFD9F1D2FFE1500F6C6AA /* photosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = photosCell.swift; sourceTree = "<group>"; };
 		53B019233DF3CD51FD06BB76 /* Pods-Security.me.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Security.me.release.xcconfig"; path = "Pods/Target Support Files/Pods-Security.me/Pods-Security.me.release.xcconfig"; sourceTree = "<group>"; };
