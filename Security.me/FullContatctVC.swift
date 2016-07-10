@@ -20,6 +20,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var theMapView: MKMapView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
     
     
     var modelObjects = [Photos]()
@@ -79,6 +80,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         //location
                         let demographics = data["demographics"]["locationDeduced"]["deducedLocation"].stringValue
                         print(demographics)
+                        self.locationLabel.text = demographics
                    
                         
                         //gender
@@ -182,6 +184,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                     //Annotation
                                     let annotation = MKPointAnnotation()
                                     annotation.title = "Target is here!"
+                                    annotation.subtitle = "\(demographics)"
                                     annotation.coordinate = (placemark.location?.coordinate)!
                                     
                                     //show the annotation
