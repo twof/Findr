@@ -26,41 +26,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var modelObjects = [Photos]()
     
     
-    //MARK: TableView Code
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelObjects.count
-    }
-    
-    
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = photosTableView.dequeueReusableCellWithIdentifier("photoCellIdentifier") as! photosCell
-        let cellObjectsContainer = modelObjects[indexPath.row]
-        cell.originLabel.text = cellObjectsContainer.photoOrigin
-      
-       
-        let url = NSURL(string: cellObjectsContainer.photoURL)
 
-        cell.photoImageView.af_setImageWithURL(url!)
-       
-
-        
-        
-        
-        
-
-        cell.socialLabel.text = cellObjectsContainer.social
-        cell.usernameLabel.text = cellObjectsContainer.username
-        cell.linkLabel.text = cellObjectsContainer.link
-        return cell
-    }
-    //End of TableView code
-
-    
-
-    
-
-    
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBAction func checkButton(sender: UIButton) {
@@ -108,7 +74,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 newPhotoModelInstance.social = type
                                 print("The social network type value : \(newPhotoModelInstance.social) has been added")
                             } else {
-                                newPhotoModelInstance.social = "Not available"
+                                newPhotoModelInstance.social = "N/A"
                             }
                             
                         
@@ -216,6 +182,44 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
 
+    //MARK: TableView Code
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return modelObjects.count
+    }
+    
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = photosTableView.dequeueReusableCellWithIdentifier("photoCellIdentifier") as! photosCell
+        let cellObjectsContainer = modelObjects[indexPath.row]
+        cell.originLabel.text = cellObjectsContainer.photoOrigin
+        
+        if cell.originLabel.text == "" {
+            cell.originLabel.text = "N/A"
+        }
+        
+        let url = NSURL(string: cellObjectsContainer.photoURL)
+        
+        cell.photoImageView.af_setImageWithURL(url!)
+        
+        
+        if url == "" {
+            let URL = NSURL(string: "https://httpbin.org/image/png")!
+            let placeholderImage = UIImage(named: "placeholder")!
+            
+            cell.photoImageView.af_setImageWithURL(URL, placeholderImage: placeholderImage)
+        }
+        
+        
+        
+        
+        
+        cell.socialLabel.text = cellObjectsContainer.social
+        cell.usernameLabel.text = cellObjectsContainer.username
+        cell.linkLabel.text = cellObjectsContainer.link
+        return cell
+    }
+    //End of TableView code
   
     
     
