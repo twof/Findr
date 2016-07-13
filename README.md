@@ -15,7 +15,7 @@ Currently, the app works on iPhone 6 devices + iPhone 6 xCode emulators. Open th
 | Alamofire     | FullContact |
 | AlamofireImage| PasswordChecker |
 | AlamofireNetworkActivityIndicator | 
-|SwiftyJSON | 
+|SwiftyJSON| 
 
 
 ![screenshot](https://github.com/kennybatista/Find.you/blob/master/findYouScreenShot.PNG)
