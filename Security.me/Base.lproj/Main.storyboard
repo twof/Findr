@@ -117,7 +117,7 @@
                                                         <rect key="frame" x="0.0" y="28" width="175" height="41"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="98a-xY-VGj" id="fGV-my-q5m">
-                                                            <rect key="frame" x="0.0" y="0.0" width="175" height="40"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="175" height="41"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Link:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t56-mN-TX9">
@@ -148,7 +148,7 @@
                                                 </connections>
                                             </tableView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="hBg-Xx-rg6">
-                                                <rect key="frame" x="4" y="16" width="184" height="177"/>
+                                                <rect key="frame" x="4" y="16" width="133" height="157"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kRk-rY-hBZ">
@@ -158,31 +158,35 @@
                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 </collectionViewFlowLayout>
                                                 <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imagesCollectionViewCell" id="85m-e2-h6Y" customClass="ImagesCollectionViewCell" customModule="Find_you" customModuleProvider="target">
-                                                        <rect key="frame" x="14" y="0.0" width="156" height="180"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imagesCollectionViewCell" id="ppt-kK-iLJ" customClass="ImagesCollectionViewCell" customModule="Find_you" customModuleProvider="target">
+                                                        <rect key="frame" x="-12" y="0.0" width="156" height="180"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                             <rect key="frame" x="0.0" y="0.0" width="156" height="180"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="image" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VyA-hS-f0I">
-                                                                    <rect key="frame" x="34" y="28" width="57" height="21"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqe-u4-tcW">
+                                                                    <rect key="frame" x="32" y="8" width="92" height="21"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0wr-Fe-Zhe">
+                                                                    <rect key="frame" x="16" y="41" width="125" height="104"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                </imageView>
                                                             </subviews>
                                                         </view>
-                                                        <color key="backgroundColor" red="0.81568627449999997" green="0.0039215686269999999" blue="0.1058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
-                                                            <outlet property="sourceLabel" destination="VyA-hS-f0I" id="k7h-bw-1gn"/>
+                                                            <outlet property="imageView" destination="0wr-Fe-Zhe" id="9BA-ud-gmU"/>
+                                                            <outlet property="sourceLabel" destination="Gqe-u4-tcW" id="HOu-8c-NbA"/>
                                                         </connections>
                                                     </collectionViewCell>
                                                 </cells>
                                                 <connections>
-                                                    <outlet property="dataSource" destination="Rj5-YO-CBZ" id="1GK-HX-6JL"/>
-                                                    <outlet property="delegate" destination="Rj5-YO-CBZ" id="xUO-3c-yF3"/>
+                                                    <outlet property="dataSource" destination="Rj5-YO-CBZ" id="7Zm-AG-CEo"/>
+                                                    <outlet property="delegate" destination="Rj5-YO-CBZ" id="bkg-Pa-gxS"/>
                                                 </connections>
                                             </collectionView>
                                         </subviews>

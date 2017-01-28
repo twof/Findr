@@ -27,6 +27,8 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var modelObjects = [FullConcactModel]()
     var emailTextFromTextField: String = ""
     
+    var images = [String]()
+    var imageSource = [String]()
 
 
     @IBOutlet weak var emailTextField: UITextField!
@@ -148,25 +150,30 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         //loop for photos
                         for (_, subJson) in json["photos"] {
                             
-                            let photoModelInstance = FullConcactModel()
+                            
                             
                             if let type = subJson["type"].string {
                                 print(type)
-                                photoModelInstance.photoOrigin = type
+                                
+                                self.imageSource.append(type)
+                                
                             }
                             
                             if let url = subJson["url"].string {
                                 print(url)
-                                photoModelInstance.photoURL = url
+                                
+                                
+                                self.images.append(url)
                             }
                             
-                            self.modelObjects.append(photoModelInstance)
-                            
+                           // self.modelObjects.append(photoModelInstance)
+                           
                             
                         }
-                        //Not having this will not show the newly downloaded data
-                        self.linksTableView.reloadData()
                         
+                        
+                        self.imagesCollectionView.reloadData()
+                        self.linksTableView.reloadData()
                         
                         
                         
@@ -276,7 +283,8 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return modelObjects.count
+        
+        return imageSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -301,7 +309,20 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         */
         
         
-        collectionCell.sourceLabel.text = "blah"
+        let photoURL = URL(string: images[indexPath.row])
+        if photoURL == nil {
+            let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
+            let placeholderImage = UIImage(named: "placeholder")!
+            collectionCell.imageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
+        } else {
+            print(photoURL)
+            let placeholderImage = UIImage(named: "placeholder.png")!
+            collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
+        }
+        
+        
+        
+        collectionCell.sourceLabel.text = imageSource[indexPath.row]
         
         
         return collectionCell
