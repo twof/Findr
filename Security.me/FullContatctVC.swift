@@ -29,7 +29,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var images = [String]()
     var imageSource = [String]()
-
+    var linksArray = [String]()
 
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -46,7 +46,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         parameters = [
             "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd",
             "apiKey":"b86dca21133b8411",
-            "email" : "\(emailTextFromTextField)"
+            "email" : "\(searchTextField.text)"
         ]
         
         
@@ -62,12 +62,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func checkButton(_ sender: UIButton) {
         
         
-            parameters["email"] = "kbatista70@yahoo.com"
+        parameters["email"] = searchTextField.text
         print("This is for the email parameter: \(parameters["email"]!)")
         Alamofire.request("https://fullcontact.p.mashape.com/v2/person.json", method: .get, parameters: self.parameters, headers: self.headers)
         .validate(contentType: ["application/json"])
             .validate().responseJSON() { response in
-        
+                self.imageSource = [""]
+                self.images = [""]
+                self.linksArray = [""]
+                
+                print("These are the images and images source\(self.images, self.imageSource)")
                 print("Request Sent out")
         
                 switch response.result {
@@ -105,42 +109,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         // MARK: loop social profiles
                         for (_, subJson) in json["socialProfiles"] {
                             
-                            // model instance
-                            let modelInstance = FullConcactModel()
                             
-                            /*
-                             if let type = subJson["typeName"].string {
-                             modelInstance.social = type
-                             print("The social network type value : \(modelInstance.social!) has been added")
-                             } else {
-                             modelInstance.social = "N/A"
-                             }
-                             */
-                            
-                            /*
-                             if let username = subJson["username"].string {
-                             modelInstance.username = username
-                             print("the username value: \(modelInstance.username!) was added")
-                             } else {
-                             modelInstance.username = "Not available"
-                             }
-                             */
                             
                             //store json data in url
                             if let url = subJson["url"].string {
                                 // we take the value of the url value and store it in the model instance that we'll append
-                                modelInstance.link = url
-                                print("the url value : \(modelInstance.link!) has been added")
+                                self.linksArray.append(url)
                             } else {
-                                modelInstance.link = "Not available"
+                                self.linksArray.append("Not available")
                             }
-                            
-                            
-                            
-                            self.modelObjects.append(modelInstance)
-                            
-                            
-                            
+    
                         }
                         
                         
@@ -150,25 +128,21 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         //loop for photos
                         for (_, subJson) in json["photos"] {
                             
-                            
-                            
-                            if let type = subJson["type"].string {
+                            // Photo origin
+                            if let type = subJson["typeName"].string {
                                 print(type)
                                 
                                 self.imageSource.append(type)
                                 
                             }
                             
+                            //Photo links
                             if let url = subJson["url"].string {
                                 print(url)
                                 
                                 
                                 self.images.append(url)
                             }
-                            
-                           // self.modelObjects.append(photoModelInstance)
-                           
-                            
                         }
                         
                         
@@ -207,9 +181,6 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 }
                             }
                         }
-                        
-                        
-                        
                     }
                 //End of success .case
                 case .failure(let error):
@@ -236,39 +207,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = linksTableView.dequeueReusableCell(withIdentifier: "linksCellIdentifier") as! LinksCell
-        let cellObjectsContainer = modelObjects[indexPath.row]
-        //cell.originLabel.text = cellObjectsContainer.photoOrigin
-        
-       // if cell.originLabel.text == "" {
-       //     cell.originLabel.text = "N/A"
-        //}
-        let link = cellObjectsContainer.link
-        
-        if  link != nil {
-            cell.linkLabel.text = String(describing: link!)
-        } else {
-            
-            cell.linkLabel.text = "No link available"
-        }
         
         
-        
-        
-        /*
-        if url == nil {
-            let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
-            let placeholderImage = UIImage(named: "placeholder")!
-            
-            cell.photoImageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
-        } else {
-            let placeholderImage = UIImage(named: "placeholder.png")!
-            cell.photoImageView.af_setImage(withURL: url!, placeholderImage: placeholderImage)
-        }
-         */
-        
-      
-        //cell.socialLabel.text = cellObjectsContainer.social
-        //cell.usernameLabel.text = cellObjectsContainer.username
+        cell.linkLabel.text = linksArray[indexPath.row]
+     
         
         return cell
     }
@@ -310,14 +252,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         let photoURL = URL(string: images[indexPath.row])
-        if photoURL == nil {
+        // if success
+        if photoURL != nil {
+            
+            let placeholderImage = UIImage(named: "placeholder.png")!
+            collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
+        // if no success
+        } else {
             let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
             let placeholderImage = UIImage(named: "placeholder")!
             collectionCell.imageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
-        } else {
-            print(photoURL)
-            let placeholderImage = UIImage(named: "placeholder.png")!
-            collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
         }
         
         
