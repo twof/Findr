@@ -5,10 +5,10 @@
 
   target 'Find.you' do
       #pod 'Alamofire', '~> 3.4'
-    pod 'SwiftyJSON', '~> 2.3'
-    pod 'Alamofire'
-    pod 'AlamofireImage'
-    pod 'AlamofireNetworkActivityIndicator'
+    pod 'SwiftyJSON', '~> 3.1'
+    pod 'Alamofire', '~> 4.3'
+    pod 'AlamofireImage', '~> 3.1'
+    pod 'AlamofireNetworkActivityIndicator', '~> 2.0'
   end
 
 
