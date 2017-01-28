@@ -13,17 +13,18 @@ import MapKit
 import AlamofireImage
 import AlamofireNetworkActivityIndicator
 
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var photosTableView: UITableView!
+    @IBOutlet weak var linksTableView: UITableView!
     @IBOutlet weak var theMapView: MKMapView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
+    @IBOutlet weak var imagesCollectionView: UICollectionView!
     
-    var modelObjects = [Photos]()
+    var modelObjects = [FullConcactModel]()
     var emailTextFromTextField: String = ""
     
 
@@ -43,7 +44,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         parameters = [
             "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd",
             "apiKey":"b86dca21133b8411",
-            "email" : "\(searchTextField.text!)"
+            "email" : "\(emailTextFromTextField)"
         ]
         
         
@@ -59,31 +60,30 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func checkButton(_ sender: UIButton) {
         
         
-            parameters["email"] = "\(searchTextField.text!)"
-        print("This is for the email parameter: \(parameters["email"])")
-                Alamofire.request("https://fullcontact.p.mashape.com/v2/person.json", method: .get, parameters: parameters, headers: headers)
-                    .validate(contentType: ["application/json"])
-                    .validate().responseJSON() { response in
-                        
-                
-                
-                
+            parameters["email"] = "kbatista70@yahoo.com"
+        print("This is for the email parameter: \(parameters["email"]!)")
+        Alamofire.request("https://fullcontact.p.mashape.com/v2/person.json", method: .get, parameters: self.parameters, headers: self.headers)
+        .validate(contentType: ["application/json"])
+            .validate().responseJSON() { response in
+        
+                print("Request Sent out")
+        
                 switch response.result {
                 case .success:
-                     //if the call is successful, do this
+                    //if the call is successful, do this
                     if let value = response.result.value {
                         let json = JSON(value)
                         // print(json)
                         
                         let data = json
                         
-
                         
+                        //Person Request
                         //location
                         let demographics = data["demographics"]["locationDeduced"]["deducedLocation"].stringValue
                         print(demographics)
                         self.locationLabel.text = demographics
-                   
+                        
                         
                         //gender
                         let gender = data["demographics"]["gender"].stringValue
@@ -94,57 +94,61 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         let name = data["contactInfo"]["fullName"]
                         self.nameLabel.text = String(describing: name)
                         print(name)
-
                         
                         
                         
                         
                         
-                       // MARK: loop social profiles
+                        
+                        // MARK: loop social profiles
                         for (_, subJson) in json["socialProfiles"] {
                             
-                            let newPhotoModelInstance = Photos()
-
+                            // model instance
+                            let modelInstance = FullConcactModel()
                             
-                            if let type = subJson["type"].string {
-                                newPhotoModelInstance.social = type
-                                print("The social network type value : \(newPhotoModelInstance.social!) has been added")
-                            } else {
-                                newPhotoModelInstance.social = "N/A"
-                            }
+                            /*
+                             if let type = subJson["typeName"].string {
+                             modelInstance.social = type
+                             print("The social network type value : \(modelInstance.social!) has been added")
+                             } else {
+                             modelInstance.social = "N/A"
+                             }
+                             */
                             
-                        
-                            if let username = subJson["username"].string {
-                                newPhotoModelInstance.username = username
-                                print("the username value: \(newPhotoModelInstance.username!) was added")
-                            } else {
-                                newPhotoModelInstance.username = "Not available"
-                            }
+                            /*
+                             if let username = subJson["username"].string {
+                             modelInstance.username = username
+                             print("the username value: \(modelInstance.username!) was added")
+                             } else {
+                             modelInstance.username = "Not available"
+                             }
+                             */
                             
-                            
+                            //store json data in url
                             if let url = subJson["url"].string {
-                                newPhotoModelInstance.link = url
-                                print("the url value : \(newPhotoModelInstance.link!) has been added")
+                                // we take the value of the url value and store it in the model instance that we'll append
+                                modelInstance.link = url
+                                print("the url value : \(modelInstance.link!) has been added")
                             } else {
-                                newPhotoModelInstance.link = "Not available"
+                                modelInstance.link = "Not available"
                             }
                             
                             
-                           
-                            self.modelObjects.append(newPhotoModelInstance)
-
-
-
-                    }
-                        
-                        
-                        
-                 
-                       
-                        //loop for photos
-                for (_, subJson) in json["photos"] {
                             
-                            let photoModelInstance = Photos()
+                            self.modelObjects.append(modelInstance)
+                            
+                            
+                            
+                        }
+                        
+                        
+                        
+                        
+                        
+                        //loop for photos
+                        for (_, subJson) in json["photos"] {
+                            
+                            let photoModelInstance = FullConcactModel()
                             
                             if let type = subJson["type"].string {
                                 print(type)
@@ -157,19 +161,20 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             }
                             
                             self.modelObjects.append(photoModelInstance)
-
                             
-                    }
-                         //Not having this will not show the newly downloaded data
-                        self.photosTableView.reloadData()
-                      
-
+                            
+                        }
+                        //Not having this will not show the newly downloaded data
+                        self.linksTableView.reloadData()
                         
                         
-                   
                         
-                       
-                       
+                        
+                        
+                        
+                        
+                        
+                        
                         
                         //MARK: Map Code
                         let geoCoder = CLGeocoder()
@@ -196,24 +201,21 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             }
                         }
                         
-          
-                      
+                        
+                        
                     }
-                    //End of success .case
+                //End of success .case
                 case .failure(let error):
                     print(error)
-              
+                    print("There is an error")
+                    
                 }
                 
                 //Hide keyboard when finished editing
                 self.view.endEditing(true)
-            
+
         }
         
-       
-        
-       
-
     }
     
     
@@ -226,19 +228,26 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = photosTableView.dequeueReusableCell(withIdentifier: "photoCellIdentifier") as! photosCell
+        let cell = linksTableView.dequeueReusableCell(withIdentifier: "linksCellIdentifier") as! LinksCell
         let cellObjectsContainer = modelObjects[indexPath.row]
-        cell.originLabel.text = cellObjectsContainer.photoOrigin
+        //cell.originLabel.text = cellObjectsContainer.photoOrigin
         
-        if cell.originLabel.text == "" {
-            cell.originLabel.text = "N/A"
+       // if cell.originLabel.text == "" {
+       //     cell.originLabel.text = "N/A"
+        //}
+        let link = cellObjectsContainer.link
+        
+        if  link != nil {
+            cell.linkLabel.text = String(describing: link!)
+        } else {
+            
+            cell.linkLabel.text = "No link available"
         }
         
-        let url = URL(string: cellObjectsContainer.photoURL)
         
         
-       
         
+        /*
         if url == nil {
             let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
             let placeholderImage = UIImage(named: "placeholder")!
@@ -248,17 +257,58 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             let placeholderImage = UIImage(named: "placeholder.png")!
             cell.photoImageView.af_setImage(withURL: url!, placeholderImage: placeholderImage)
         }
+         */
         
       
-        cell.socialLabel.text = cellObjectsContainer.social
-        cell.usernameLabel.text = cellObjectsContainer.username
-        cell.linkLabel.text = cellObjectsContainer.link
+        //cell.socialLabel.text = cellObjectsContainer.social
+        //cell.usernameLabel.text = cellObjectsContainer.username
+        
         return cell
     }
     //End of TableView code
   
 
-  
+    
+    
+    
+    
+    
+    
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return modelObjects.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let collectionCell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: "imagesCollectionViewCell", for: indexPath) as! ImagesCollectionViewCell
+        
+        
+        /*
+        let cellObjectsContainer = modelObjects[indexPath.row].photoURL
+        
+        let photoURL = URL(string: cellObjectsContainer)
+        
+         if photoURL == nil {
+             let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
+             let placeholderImage = UIImage(named: "placeholder")!
+             collectionCell.imageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
+         } else {
+             print(photoURL)
+             let placeholderImage = UIImage(named: "placeholder.png")!
+             collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
+         }
+        
+        */
+        
+        
+        collectionCell.sourceLabel.text = "blah"
+        
+        
+        return collectionCell
+    }
+        
+        
+    
     
     
     

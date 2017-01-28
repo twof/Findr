@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Photos {
+class FullConcactModel {
     var photoURL = ""
     var photoOrigin : String!
     var social : String!
