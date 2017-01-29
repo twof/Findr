@@ -278,7 +278,9 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
 
 //End of class
