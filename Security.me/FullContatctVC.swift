@@ -29,7 +29,9 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var images = [String]()
     var imageSource = [String]()
+    var linksSource = [String]()
     var linksArray = [String]()
+    
 
     @IBOutlet weak var emailTextField: UITextField!
     
@@ -49,8 +51,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             "email" : "\(searchTextField.text)"
         ]
         
-        
-        
+        imageSource.append("Placeholder Image")
+        images.append("https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")
+        linksSource.append("Placeholder until search")
+        linksArray.append("www.placeholder.com")
     }
     
     
@@ -58,6 +62,20 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let headers: HTTPHeaders = ["Accept": "application/json", "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd"]
     
+    @IBAction func helpButton(_ sender: Any) {
+        print(#function)
+        let alertController = UIAlertController(title: "Select one", message: "Hey! Need help or want to provide some feedback?", preferredStyle: .alert)
+        
+        let helpAction = UIAlertAction(title: "Help", style: .default, handler: nil)
+        let feedbackAction = UIAlertAction(title: "Feedback", style: .default, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(feedbackAction)
+        alertController.addAction(helpAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     @IBAction func checkButton(_ sender: UIButton) {
         
@@ -67,9 +85,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         Alamofire.request("https://fullcontact.p.mashape.com/v2/person.json", method: .get, parameters: self.parameters, headers: self.headers)
         .validate(contentType: ["application/json"])
             .validate().responseJSON() { response in
-                self.imageSource = [""]
-                self.images = [""]
-                self.linksArray = [""]
+                self.imageSource.removeAll()
+                self.images.removeAll()
+                self.linksArray.removeAll()
+                self.linksSource.removeAll()
                 
                 print("These are the images and images source\(self.images, self.imageSource)")
                 print("Request Sent out")
@@ -109,11 +128,13 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         // MARK: loop social profiles
                         for (_, subJson) in json["socialProfiles"] {
                             
-                            
+                            if let linkSource = subJson["typeName"].string {
+                                self.linksSource.append(linkSource)
+                            }
                             
                             //store json data in url
                             if let url = subJson["url"].string {
-                                // we take the value of the url value and store it in the model instance that we'll append
+                                
                                 self.linksArray.append(url)
                             } else {
                                 self.linksArray.append("Not available")
@@ -132,7 +153,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             if let type = subJson["typeName"].string {
                                 print(type)
                                 
-                                self.imageSource.append(type)
+                                self.imageSource.append("\(type) Image")
                                 
                             }
                             
@@ -145,7 +166,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             }
                         }
                         
-                        
+                        print("This is the imagesource and linksarray: \(self.imageSource, self.linksArray)")
                         self.imagesCollectionView.reloadData()
                         self.linksTableView.reloadData()
                         
@@ -171,7 +192,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                     
                                     //Annotation
                                     let annotation = MKPointAnnotation()
-                                    annotation.title = "Target is here!"
+                                    annotation.title = "Person is here!"
                                     annotation.subtitle = "\(demographics)"
                                     annotation.coordinate = (placemark.location?.coordinate)!
                                     
@@ -200,7 +221,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     //MARK: TableView Code
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modelObjects.count
+        return linksArray.count
     }
     
     
@@ -210,7 +231,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         cell.linkLabel.text = linksArray[indexPath.row]
-     
+        cell.sourceLabel.text = linksSource[indexPath.row]
         
         return cell
     }
@@ -231,25 +252,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collectionCell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: "imagesCollectionViewCell", for: indexPath) as! ImagesCollectionViewCell
-        
-        
-        /*
-        let cellObjectsContainer = modelObjects[indexPath.row].photoURL
-        
-        let photoURL = URL(string: cellObjectsContainer)
-        
-         if photoURL == nil {
-             let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
-             let placeholderImage = UIImage(named: "placeholder")!
-             collectionCell.imageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
-         } else {
-             print(photoURL)
-             let placeholderImage = UIImage(named: "placeholder.png")!
-             collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
-         }
-        
-        */
-        
+
         
         let photoURL = URL(string: images[indexPath.row])
         // if success
@@ -259,15 +262,15 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
         // if no success
         } else {
-            let URL = Foundation.URL(string: "https://httpbin.org/image/png")!
-            let placeholderImage = UIImage(named: "placeholder")!
+            let URL = Foundation.URL(string: "https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")!
+            let placeholderImage = UIImage(named: "placeholder.png")!
             collectionCell.imageView.af_setImage(withURL: URL, placeholderImage: placeholderImage)
         }
         
         
         
         collectionCell.sourceLabel.text = imageSource[indexPath.row]
-        
+        collectionCell.layer.cornerRadius = 8
         
         return collectionCell
     }

@@ -10,5 +10,6 @@ import UIKit
 
 class LinksCell: UITableViewCell {
     
+    @IBOutlet weak var sourceLabel: UILabel!
     @IBOutlet weak var linkLabel: UILabel!
 }
