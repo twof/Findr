@@ -33,7 +33,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var linksArray = [String]()
     
 
-    @IBOutlet weak var emailTextField: UITextField!
+    
     
     var parameters: Parameters = [:]
     
@@ -62,7 +62,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let headers: HTTPHeaders = ["Accept": "application/json", "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd"]
     
-    @IBAction func helpButton(_ sender: Any) {
+    @IBAction func helpButtonAction(_ sender: UIButton) {
         print(#function)
         let alertController = UIAlertController(title: "Select one", message: "Hey! Need help or want to provide some feedback?", preferredStyle: .alert)
         
@@ -75,7 +75,9 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
+
     }
+    
     
     @IBAction func checkButton(_ sender: UIButton) {
         
