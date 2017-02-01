@@ -12,8 +12,9 @@ import Alamofire
 import MapKit
 import AlamofireImage
 import AlamofireNetworkActivityIndicator
+import MessageUI
 
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate {
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var linksTableView: UITableView!
@@ -32,11 +33,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var linksSource = [String]()
     var linksArray = [String]()
     
-
-    
-    
     var parameters: Parameters = [:]
-    
     
     
     
@@ -62,16 +59,24 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let headers: HTTPHeaders = ["Accept": "application/json", "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd"]
     
+//[Help Button]
     @IBAction func helpButtonAction(_ sender: UIButton) {
         print(#function)
-        let alertController = UIAlertController(title: "Select one", message: "Hey! Need help or want to provide some feedback?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Hey!", message: "Need help or want to provide some feedback? Just tap below:", preferredStyle: .alert)
         
-        let helpAction = UIAlertAction(title: "Help", style: .default, handler: nil)
-        let feedbackAction = UIAlertAction(title: "Feedback", style: .default, handler: nil)
+        
+        let helpOrFeedbackAction = UIAlertAction(title: "Feedback", style: .default) { (UIAlertAction) in
+            if (MFMessageComposeViewController.canSendText()) {
+                let controller = MFMessageComposeViewController()
+                controller.body = "Hello team Findr! I've got something to tell you: "
+                controller.recipients = ["13477920858"]
+                controller.messageComposeDelegate = self
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        alertController.addAction(feedbackAction)
-        alertController.addAction(helpAction)
+        alertController.addAction(helpOrFeedbackAction)
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
@@ -79,8 +84,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        // handle sms screen actions
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    
+    
+    
+//[Search for email Button]
     @IBAction func checkButton(_ sender: UIButton) {
-        
         
         parameters["email"] = searchTextField.text
         print("This is for the email parameter: \(parameters["email"]!)")
@@ -180,13 +193,13 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         
                         
-                        //MARK: Map Code
+//MARK: Map Code
                         let geoCoder = CLGeocoder()
                         
                         geoCoder.geocodeAddressString(String(demographics)) { (placemarks, error) -> Void in
                             
                             if error != nil {
-                                print(error)
+                                print(error!)
                                 return
                             } else {
                                 if (placemarks?.count)! > 0 {
@@ -194,7 +207,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                     
                                     //Annotation
                                     let annotation = MKPointAnnotation()
-                                    annotation.title = "Person is here!"
+                                    annotation.title = "Your location based on public info"
                                     annotation.subtitle = "\(demographics)"
                                     annotation.coordinate = (placemark.location?.coordinate)!
                                     
