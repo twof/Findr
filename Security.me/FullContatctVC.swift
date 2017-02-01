@@ -13,7 +13,12 @@ import MapKit
 import AlamofireImage
 import AlamofireNetworkActivityIndicator
 import MessageUI
+import SafariServices
 
+
+
+
+@available(iOS 9.0, *)
 class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate {
     
     @IBOutlet weak var searchTextField: UITextField!
@@ -22,6 +27,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var genderLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var searchButtonOutlet: UIButton!
     
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     
@@ -41,7 +47,9 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         emailTextFromTextField = String(describing: searchTextField.text)
-
+        
+//        searchButtonOutlet
+        
         parameters = [
             "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd",
             "apiKey":"b86dca21133b8411",
@@ -187,12 +195,6 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         
                         
-                        
-                        
-                        
-                        
-                        
-                        
 //MARK: Map Code
                         let geoCoder = CLGeocoder()
                         
@@ -207,7 +209,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                     
                                     //Annotation
                                     let annotation = MKPointAnnotation()
-                                    annotation.title = "Your location based on public info"
+                                    annotation.title = "Your location based on public info: "
                                     annotation.subtitle = "\(demographics)"
                                     annotation.coordinate = (placemark.location?.coordinate)!
                                     
@@ -252,7 +254,28 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     //End of TableView code
   
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let link = linksArray[indexPath.row]
+        
+        //Alert
+        let alertController = UIAlertController(title: "Open link in browser?", message: "Tap below to see what the internet is storing ", preferredStyle: .alert)
+        
+        let openBrowserAction = UIAlertAction(title: "Open", style: .default) { (UIAlertAction) in
+        
+            let url = URL(string: link)
+            let safariVC = SFSafariViewController(url: url!, entersReaderIfAvailable: true)
+            self.present(safariVC, animated: true, completion: nil)
+        }
+        
+        alertController.addAction(openBrowserAction)
+        
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+            
+        
+    }
     
     
     
