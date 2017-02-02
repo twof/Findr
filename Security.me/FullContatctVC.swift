@@ -63,8 +63,22 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
+    //rate my app:
+    func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
+        guard let url = URL(string : "itms-apps://itunes.apple.com/app/" + appId) else {
+            completion(false)
+            return
+        }
+        guard #available(iOS 10, *) else {
+            completion(UIApplication.shared.openURL(url))
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+    }
     
     
+    
+    // headers to feed the api call
     let headers: HTTPHeaders = ["Accept": "application/json", "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd"]
     
 //[Help Button]
@@ -73,6 +87,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let alertController = UIAlertController(title: "Hey!", message: "Need help or want to provide some feedback? Just tap below:", preferredStyle: .alert)
         
         
+        // feedback or help action button
         let helpOrFeedbackAction = UIAlertAction(title: "Feedback", style: .default) { (UIAlertAction) in
             if (MFMessageComposeViewController.canSendText()) {
                 let controller = MFMessageComposeViewController()
@@ -82,12 +97,28 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.present(controller, animated: true, completion: nil)
             }
         }
+        
+        // cancel action button
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
+        // rate app action button
+        let rateButton = UIAlertAction(title: "Rate", style: .default) { (UIAlertAction) in
+            self.rateApp(appId: "id1201439669", completion: { success in
+                print("RateApp \(success)")
+            })
+        }
+        
+        
+        // add action buttons to alert controller
         alertController.addAction(helpOrFeedbackAction)
+        alertController.addAction(rateButton)
         alertController.addAction(cancelAction)
         
+        // present the controller
         self.present(alertController, animated: true, completion: nil)
+        
+        
+        
 
     }
     
@@ -209,7 +240,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                                     
                                     //Annotation
                                     let annotation = MKPointAnnotation()
-                                    annotation.title = "Your location based on public info: "
+                                    annotation.title = "Location found online: "
                                     annotation.subtitle = "\(demographics)"
                                     annotation.coordinate = (placemark.location?.coordinate)!
                                     
@@ -258,15 +289,18 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let link = linksArray[indexPath.row]
         
         //Alert
-        let alertController = UIAlertController(title: "Open link in browser?", message: "Tap below to see what the internet is storing ", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Open link in browser?", message: "Tap below to see what the internet is storing about you", preferredStyle: .alert)
         
         let openBrowserAction = UIAlertAction(title: "Open", style: .default) { (UIAlertAction) in
         
             let url = URL(string: link)
-            let safariVC = SFSafariViewController(url: url!, entersReaderIfAvailable: true)
+            let safariVC = SFSafariViewController(url: url!)
             self.present(safariVC, animated: true, completion: nil)
         }
         
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
         alertController.addAction(openBrowserAction)
         
         
@@ -279,10 +313,6 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     
-    
-    
-    
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return imageSource.count
@@ -313,8 +343,6 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         return collectionCell
     }
         
-        
-    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
