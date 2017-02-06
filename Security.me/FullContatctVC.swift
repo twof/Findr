@@ -15,15 +15,11 @@ import AlamofireNetworkActivityIndicator
 import MessageUI
 import SafariServices
 import StoreKit
-<<<<<<< HEAD
 import SwiftyStoreKit
-=======
-
->>>>>>> d6b35a7927ad46a98f43e06b72fb5dd082e60827
 
 let sharedSecret = "9252bdd1aa974e3c8413e4913de34bae"
 
-// organize our product 
+// organize our product
 enum RegisteredPurchase : String {
     case enablemap = "enablemap"
     case autoRenewable = "autoRenewable"
@@ -58,9 +54,8 @@ class NetworkActivityIndicatorManager : NSObject {
 
 
 @available(iOS 9.0, *)
-<<<<<<< HEAD
 class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate {
-//start of IAP
+    //start of IAP
     @IBOutlet var MoneyLbl: UILabel!
     
     var Money = Int()
@@ -68,14 +63,14 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     let bundleID = "com.kennybatista.findr"
     
     var enablemap = RegisteredPurchase.enablemap
-//    var RemoveAds = RegisteredPurchase.RemoveAds
+    //    var RemoveAds = RegisteredPurchase.RemoveAds
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Do any additional setup after loading the view, typically from a nib.
-//        
-//        self.MoneyLbl.text = "\(self.Money)"
-//    }
+    //    override func viewDidLoad() {
+    //        super.viewDidLoad()
+    //        // Do any additional setup after loading the view, typically from a nib.
+    //
+    //        self.MoneyLbl.text = "\(self.Money)"
+    //    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -87,7 +82,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @IBAction func Consumable2(_ sender: Any) {
-//        purchase(purchase: RemoveAds)
+        //        purchase(purchase: RemoveAds)
     }
     
     @IBAction func Renewable(_ sender: Any) {
@@ -123,15 +118,15 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Success")
                 if product.productId == self.bundleID + "." + "enablemap"{
                     
-//                    self.Money += 10
-//                    self.MoneyLbl.text = "\(self.Money)"
+                    //                    self.Money += 10
+                    //                    self.MoneyLbl.text = "\(self.Money)"
                     
                 }
-//                if product.productId == self.bundleID + "." + "RemoveAds" {
-//                    
-////                    self.Money += 100
-////                    self.MoneyLbl.text = "\(self.Money)"
-//                }
+                //                if product.productId == self.bundleID + "." + "RemoveAds" {
+                //
+                ////                    self.Money += 100
+                ////                    self.MoneyLbl.text = "\(self.Money)"
+                //                }
                 
                 if product.needsFinishTransaction {
                     print("Needs to finish transaction, alert won't show up")
@@ -223,11 +218,8 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         })
         
     }
-
-//end of IAP
-=======
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver  {
->>>>>>> d6b35a7927ad46a98f43e06b72fb5dd082e60827
+    
+    //end of IAP
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var linksTableView: UITableView!
@@ -249,29 +241,20 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var parameters: Parameters = [:]
     
-<<<<<<< HEAD
     @IBOutlet weak var mapOverlayViewToBeRemovedAfterPurchase: UIView!
-=======
-    // in app purchases
-    @IBOutlet weak var enableMapOutlet: UIButton!
-    
-    var listOfProducts = [SKProduct]()
-    var currentProduct = SKProduct()
-    
->>>>>>> d6b35a7927ad46a98f43e06b72fb5dd082e60827
     
     @IBAction func enableMapAfterPurchaseButton(_ sender: Any) {
         print(#function)
         purchase(purchase: .enablemap)
     }
     
-//[ViewDidLoad]
+    //[ViewDidLoad]
     override func viewDidLoad() {
         print("Entered ViewDidLoad")
         super.viewDidLoad()
         emailTextFromTextField = String(describing: searchTextField.text)
         
-//        searchButtonOutlet
+        //        searchButtonOutlet
         
         parameters = [
             "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd",
@@ -279,27 +262,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             "email" : "\(searchTextField.text)"
         ]
         
-        imageSource.append("Search First")
+        imageSource.append("Placeholder Image")
         images.append("https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")
-        linksSource.append("Search first")
-        linksArray.append("www.search_first.com")
-        
-        
-        enableMapOutlet.isEnabled = false
-        
-        if(SKPaymentQueue.canMakePayments()) {
-            print("IAP is enabled, loading")
-            let productID: NSSet = NSSet(objects: "findr.enablemap", "findr.consulting")
-            print(productID)
-            let request: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
-            request.delegate = self
-            request.start()
-        } else {
-            print("please enable IAPS")
-        }
-        
-        
-        
+        linksSource.append("Placeholder until search")
+        linksArray.append("www.placeholder.com")
     }
     
     
@@ -321,7 +287,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     // headers to feed the api call
     let headers: HTTPHeaders = ["Accept": "application/json", "X-Mashape-Key":" OyaoPyoyPVmshHaiD8dc5CA9GJeCp12QsDKjsnWgTnZ5Aq3nQd"]
     
-//[Help Button]
+    //[Help Button]
     @IBAction func helpButtonAction(_ sender: UIButton) {
         print(#function)
         let alertController = UIAlertController(title: "Hey!", message: "Need help or want to provide some feedback? Just tap below:", preferredStyle: .alert)
@@ -359,7 +325,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         
-
+        
     }
     
     
@@ -367,17 +333,17 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         // handle sms screen actions
         self.dismiss(animated: true, completion: nil)
     }
-
     
     
     
-//[Search for email Button]
+    
+    //[Search for email Button]
     @IBAction func checkButton(_ sender: UIButton) {
         
         parameters["email"] = searchTextField.text
         print("This is for the email parameter: \(parameters["email"]!)")
         Alamofire.request("https://fullcontact.p.mashape.com/v2/person.json", method: .get, parameters: self.parameters, headers: self.headers)
-        .validate(contentType: ["application/json"])
+            .validate(contentType: ["application/json"])
             .validate().responseJSON() { response in
                 self.imageSource.removeAll()
                 self.images.removeAll()
@@ -386,7 +352,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 print("These are the images and images source\(self.images, self.imageSource)")
                 print("Request Sent out")
-        
+                
                 switch response.result {
                 case .success:
                     //if the call is successful, do this
@@ -433,7 +399,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                             } else {
                                 self.linksArray.append("Not available")
                             }
-    
+                            
                         }
                         
                         
@@ -466,7 +432,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         
                         
-//MARK: Map Code
+                        //MARK: Map Code
                         let geoCoder = CLGeocoder()
                         
                         geoCoder.geocodeAddressString(String(demographics)) { (placemarks, error) -> Void in
@@ -500,13 +466,13 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 //Hide keyboard when finished editing
                 self.view.endEditing(true)
-
+                
         }
         
     }
     
     
-
+    
     //MARK: TableView Code
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return linksArray.count
@@ -524,7 +490,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     //End of TableView code
-  
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let link = linksArray[indexPath.row]
         
@@ -532,7 +498,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let alertController = UIAlertController(title: "Open link in browser?", message: "Tap below to see what the internet is storing about you", preferredStyle: .alert)
         
         let openBrowserAction = UIAlertAction(title: "Open", style: .default) { (UIAlertAction) in
-        
+            
             let url = URL(string: link)
             let safariVC = SFSafariViewController(url: url!)
             self.present(safariVC, animated: true, completion: nil)
@@ -547,7 +513,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.present(alertController, animated: true, completion: nil)
         
         tableView.deselectRow(at: indexPath, animated: true)
-            
+        
         
     }
     
@@ -560,7 +526,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collectionCell = imagesCollectionView.dequeueReusableCell(withReuseIdentifier: "imagesCollectionViewCell", for: indexPath) as! ImagesCollectionViewCell
-
+        
         
         let photoURL = URL(string: images[indexPath.row])
         // if success
@@ -568,7 +534,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             let placeholderImage = UIImage(named: "placeholder.png")!
             collectionCell.imageView.af_setImage(withURL: photoURL!, placeholderImage: placeholderImage)
-        // if no success
+            // if no success
         } else {
             let URL = Foundation.URL(string: "https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")!
             let placeholderImage = UIImage(named: "placeholder.png")!
@@ -582,120 +548,17 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         return collectionCell
     }
-        
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     
-    //In-APP purchases
-    @IBAction func EnableMap(_ sender: Any) {
-        print("enable maps")
-        for product in listOfProducts {
-            let prodID = product.productIdentifier
-            if(prodID == "findr.enablemap") {
-                self.currentProduct = product
-                buyProduct()
-            }
-        }
-    }
-    
-    
-    
-    func enableMap(){
-        enableMapOutlet.removeFromSuperview()
-    }
-    
-    
-    func buyProduct() {
-        print("buy " + currentProduct.productIdentifier)
-        let pay = SKPayment(product: currentProduct)
-        SKPaymentQueue.default().add(self)
-        SKPaymentQueue.default().add(pay as SKPayment)
-    }
-    
-   
-    
-    // this function connects to itunes connect and asks for a list of in app purchases, and then in here if we have items that the user can shop from we can return them and add them to a lisst where we'll then print out to make sure that the users is connected and can shop. Also, we enable the buttons so that the user can shop
-    
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        print("Products Requested - you should receive a list of products now")
-        let products = response.products
-        print(products)
-        for product in products {
-            print("Product Added")
-            print(product.productIdentifier)
-            print(product.localizedTitle)
-            print(product.localizedDescription)
-            print(product.price)
-            
-            listOfProducts.append(product)
-        }
-        
-        searchButtonOutlet.isEnabled = true
-        
-        
-    }
-    
-    
-    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-        print("Transaction restored")
-        for transaction in queue.transactions {
-            let t: SKPaymentTransaction = transaction
-            let proID = t.payment.productIdentifier as String
-            
-            switch proID {
-            case "findr.enablemap":
-                enableMap()
-            case "consulting":
-                enableMap()
-            default:
-                print("IAP not found")
-            }
-        }
-    }
-    
-    
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        print("Add payment")
-        
-        for transaction: AnyObject in transactions {
-            let trans = transaction as! SKPaymentTransaction
-            print(trans.error)
-            
-            switch trans.transactionState {
-            case .purchased:
-                print("buy ok, unlock IAP HERE")
-                print(currentProduct.productIdentifier)
-                
-                let prodID = currentProduct.productIdentifier
-                switch prodID {
-                case "findr.enablemap":
-                    print("findr.enablemap")
-//                    removeAds()
-                case "findr.consulting":
-                    print("consulting")
-//                    addCoins()
-                default:
-                    print("IAP not found")
-                }
-                queue.finishTransaction(trans)
-            case .failed:
-                print("buy error")
-                queue.finishTransaction(trans)
-                break
-            default:
-                print("Default")
-                break
-            }
-        }
-    }
-//End of class
+    //End of class
 }
 
 
-<<<<<<< HEAD
 @available(iOS 9.0, *)
 extension FullContatctVC {
     
@@ -747,8 +610,8 @@ extension FullContatctVC {
                 }
             case.invalidProductId(let productID):
                 return alertWithTitle(title: "Purchase Failed", message: "\(productID) is not a valid product identifier")
-//            case .noProductIdentifier:
-//                return alertWithTitle(title: "Purchase Failed", message: "Product not found")
+                //            case .noProductIdentifier:
+            //                return alertWithTitle(title: "Purchase Failed", message: "Product not found")
             case .paymentNotAllowed:
                 return alertWithTitle(title: "Purchase Failed", message: "You are not allowed to make payments")
                 
@@ -818,5 +681,3 @@ extension FullContatctVC {
     
 }
 
-=======
->>>>>>> d6b35a7927ad46a98f43e06b72fb5dd082e60827
