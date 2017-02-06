@@ -1,0 +1,6 @@
+framework module Pods_Find_you {
+  umbrella header "Pods-Find.you-umbrella.h"
+
+  export *
+  module * { export * }
+}
