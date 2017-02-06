@@ -216,6 +216,7 @@
                                                     <constraint firstAttribute="height" constant="196" id="Q2Q-5h-g3K"/>
                                                 </constraints>
                                             </mapView>
+<<<<<<< HEAD
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q1e-W0-Lkk">
                                                 <rect key="frame" x="25" y="869" width="325" height="196"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -231,6 +232,20 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
+=======
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPt-is-t74">
+                                                <rect key="frame" x="25" y="869" width="325" height="196"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="196" id="Wv1-JB-VzI"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                <state key="normal" title="Enable Map"/>
+                                                <connections>
+                                                    <action selector="EnableMap:" destination="C0b-xe-yew" eventType="touchUpInside" id="x8M-ZY-unc"/>
+                                                </connections>
+                                            </button>
+>>>>>>> d6b35a7927ad46a98f43e06b72fb5dd082e60827
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -241,6 +256,7 @@
                                             <constraint firstItem="HKs-Rx-Kh9" firstAttribute="top" secondItem="hB8-Qj-S1D" secondAttribute="bottom" constant="18" id="4oy-qh-xgU"/>
                                             <constraint firstItem="gCC-Ro-kpU" firstAttribute="width" secondItem="5We-IC-Jrw" secondAttribute="width" id="7LP-sx-yBj"/>
                                             <constraint firstItem="ZD6-bP-Nvj" firstAttribute="leading" secondItem="5We-IC-Jrw" secondAttribute="leading" constant="21" id="8fW-U5-oUc"/>
+                                            <constraint firstItem="QPt-is-t74" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="9Lx-1H-iKT"/>
                                             <constraint firstItem="gCC-Ro-kpU" firstAttribute="leading" secondItem="5We-IC-Jrw" secondAttribute="leading" id="9Tw-9N-swh"/>
                                             <constraint firstAttribute="bottom" secondItem="aEX-Gc-5cY" secondAttribute="bottom" constant="30" id="A69-ex-2AU"/>
                                             <constraint firstAttribute="trailing" secondItem="HKs-Rx-Kh9" secondAttribute="trailing" constant="25" id="CYZ-nK-bBo"/>
@@ -250,6 +266,7 @@
                                             <constraint firstItem="Sad-K2-GKs" firstAttribute="trailing" secondItem="gCC-Ro-kpU" secondAttribute="trailing" id="J5n-Mm-fVX"/>
                                             <constraint firstItem="ZD6-bP-Nvj" firstAttribute="trailing" secondItem="5We-IC-Jrw" secondAttribute="trailing" constant="-6" id="JkS-X0-ZxV"/>
                                             <constraint firstItem="CHX-o6-vMY" firstAttribute="width" secondItem="gCC-Ro-kpU" secondAttribute="width" id="KSD-OA-gIB"/>
+                                            <constraint firstItem="QPt-is-t74" firstAttribute="trailing" secondItem="gCC-Ro-kpU" secondAttribute="trailing" id="M43-O8-hjd"/>
                                             <constraint firstItem="5We-IC-Jrw" firstAttribute="width" secondItem="HKs-Rx-Kh9" secondAttribute="width" id="NKH-hL-Qfi"/>
                                             <constraint firstItem="hBg-Xx-rg6" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="64" id="OR0-FF-8Nz"/>
                                             <constraint firstItem="ZD6-bP-Nvj" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="-30" id="Q6l-Cs-AEI"/>
@@ -259,7 +276,10 @@
                                             <constraint firstItem="CHX-o6-vMY" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="TSE-os-OBf"/>
                                             <constraint firstItem="HKs-Rx-Kh9" firstAttribute="leading" secondItem="rML-uv-XDp" secondAttribute="leading" constant="25" id="Uk1-cd-drh"/>
                                             <constraint firstItem="Mgr-wh-WFQ" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="UqS-LU-ZQn"/>
+                                            <constraint firstAttribute="bottom" secondItem="QPt-is-t74" secondAttribute="bottom" constant="30" id="Wic-CY-lLz"/>
+                                            <constraint firstItem="QPt-is-t74" firstAttribute="leading" secondItem="gCC-Ro-kpU" secondAttribute="leading" id="X19-H5-cZL"/>
                                             <constraint firstItem="aEX-Gc-5cY" firstAttribute="width" secondItem="gCC-Ro-kpU" secondAttribute="width" id="cti-yI-Y6S"/>
+                                            <constraint firstItem="QPt-is-t74" firstAttribute="width" secondItem="gCC-Ro-kpU" secondAttribute="width" id="ddU-r3-hgh"/>
                                             <constraint firstItem="CHX-o6-vMY" firstAttribute="trailing" secondItem="gCC-Ro-kpU" secondAttribute="trailing" id="fg8-Bh-VRc"/>
                                             <constraint firstItem="5We-IC-Jrw" firstAttribute="top" secondItem="ZRP-eh-6W8" secondAttribute="bottom" constant="45" id="kW3-n4-Ioe"/>
                                             <constraint firstItem="5We-IC-Jrw" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="lGf-3u-DcH"/>
@@ -303,6 +323,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="1095"/>
                     <connections>
+                        <outlet property="enableMapOutlet" destination="QPt-is-t74" id="JoP-fK-TRe"/>
                         <outlet property="genderLabel" destination="9bZ-C0-DZO" id="WAg-EZ-Nyr"/>
                         <outlet property="imagesCollectionView" destination="hBg-Xx-rg6" id="zca-hX-TQP"/>
                         <outlet property="linksTableView" destination="Sad-K2-GKs" id="MSK-4f-fD0"/>
