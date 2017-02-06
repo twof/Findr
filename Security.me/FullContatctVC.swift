@@ -14,12 +14,14 @@ import AlamofireImage
 import AlamofireNetworkActivityIndicator
 import MessageUI
 import SafariServices
+import StoreKit
+
 
 
 
 
 @available(iOS 9.0, *)
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate {
+class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver  {
     
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var linksTableView: UITableView!
@@ -41,6 +43,12 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var parameters: Parameters = [:]
     
+    // in app purchases
+    @IBOutlet weak var enableMapOutlet: UIButton!
+    
+    var listOfProducts = [SKProduct]()
+    var currentProduct = SKProduct()
+    
     
     
 //[ViewDidLoad]
@@ -56,10 +64,27 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             "email" : "\(searchTextField.text)"
         ]
         
-        imageSource.append("Placeholder Image")
+        imageSource.append("Search First")
         images.append("https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")
-        linksSource.append("Placeholder until search")
-        linksArray.append("www.placeholder.com")
+        linksSource.append("Search first")
+        linksArray.append("www.search_first.com")
+        
+        
+        enableMapOutlet.isEnabled = false
+        
+        if(SKPaymentQueue.canMakePayments()) {
+            print("IAP is enabled, loading")
+            let productID: NSSet = NSSet(objects: "findr.enablemap", "findr.consulting")
+            print(productID)
+            let request: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
+            request.delegate = self
+            request.start()
+        } else {
+            print("please enable IAPS")
+        }
+        
+        
+        
     }
     
     
@@ -348,6 +373,110 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         return .lightContent
     }
     
-
+    
+    //In-APP purchases
+    @IBAction func EnableMap(_ sender: Any) {
+        print("enable maps")
+        for product in listOfProducts {
+            let prodID = product.productIdentifier
+            if(prodID == "findr.enablemap") {
+                self.currentProduct = product
+                buyProduct()
+            }
+        }
+    }
+    
+    
+    
+    func enableMap(){
+        enableMapOutlet.removeFromSuperview()
+    }
+    
+    
+    func buyProduct() {
+        print("buy " + currentProduct.productIdentifier)
+        let pay = SKPayment(product: currentProduct)
+        SKPaymentQueue.default().add(self)
+        SKPaymentQueue.default().add(pay as SKPayment)
+    }
+    
+   
+    
+    // this function connects to itunes connect and asks for a list of in app purchases, and then in here if we have items that the user can shop from we can return them and add them to a lisst where we'll then print out to make sure that the users is connected and can shop. Also, we enable the buttons so that the user can shop
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        print("Products Requested - you should receive a list of products now")
+        let products = response.products
+        print(products)
+        for product in products {
+            print("Product Added")
+            print(product.productIdentifier)
+            print(product.localizedTitle)
+            print(product.localizedDescription)
+            print(product.price)
+            
+            listOfProducts.append(product)
+        }
+        
+        searchButtonOutlet.isEnabled = true
+        
+        
+    }
+    
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        print("Transaction restored")
+        for transaction in queue.transactions {
+            let t: SKPaymentTransaction = transaction
+            let proID = t.payment.productIdentifier as String
+            
+            switch proID {
+            case "findr.enablemap":
+                enableMap()
+            case "consulting":
+                enableMap()
+            default:
+                print("IAP not found")
+            }
+        }
+    }
+    
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        print("Add payment")
+        
+        for transaction: AnyObject in transactions {
+            let trans = transaction as! SKPaymentTransaction
+            print(trans.error)
+            
+            switch trans.transactionState {
+            case .purchased:
+                print("buy ok, unlock IAP HERE")
+                print(currentProduct.productIdentifier)
+                
+                let prodID = currentProduct.productIdentifier
+                switch prodID {
+                case "findr.enablemap":
+                    print("findr.enablemap")
+//                    removeAds()
+                case "findr.consulting":
+                    print("consulting")
+//                    addCoins()
+                default:
+                    print("IAP not found")
+                }
+                queue.finishTransaction(trans)
+            case .failed:
+                print("buy error")
+                queue.finishTransaction(trans)
+                break
+            default:
+                print("Default")
+                break
+            }
+        }
+    }
 //End of class
 }
+
+

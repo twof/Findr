@@ -9,6 +9,7 @@
     pod 'Alamofire', '~> 4.3'
     pod 'AlamofireImage', '~> 3.1'
     pod 'AlamofireNetworkActivityIndicator', '~> 2.0'
+    pod 'Firebase/Core'
     
   end
 
