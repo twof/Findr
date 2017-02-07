@@ -15,201 +15,15 @@ import AlamofireNetworkActivityIndicator
 import MessageUI
 import SafariServices
 import StoreKit
-import SwiftyStoreKit
+
 
 let sharedSecret = "9252bdd1aa974e3c8413e4913de34bae"
 
-// organize our product 
-enum RegisteredPurchase : String {
-    case enablemap = "enablemap"
-//    case autoRenewable = "autoRenewable"
-}
-
-//Handle connection
-class NetworkActivityIndicatorManager : NSObject {
-    
-    private static var loadingCount = 0
-    
-    class func NetworkOperationStarted() {
-        if loadingCount == 0 {
-            
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        }
-        loadingCount += 1
-    }
-    
-    class func networkOperationFinished(){
-        if loadingCount > 0 {
-            loadingCount -= 1
-            
-        }
-        
-        if loadingCount == 0 {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            
-        }
-    }
-}
-
-
-
 @available(iOS 9.0, *)
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate {
-//start of IAP
+class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+
   
-    
-    let bundleID = "com.kennybatista.findr"
-    
-    var enablemap = RegisteredPurchase.enablemap
 
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
- 
-    
-    
-    func getInfo(purchase : RegisteredPurchase) {
-        NetworkActivityIndicatorManager.NetworkOperationStarted()
-        SwiftyStoreKit.retrieveProductsInfo([bundleID + "." + purchase.rawValue], completion: {
-            result in
-            print(#function)
-            let productName = result.retrievedProducts.first?.localizedTitle
-            let price = result.retrievedProducts.first?.price
-            
-            print("Name of retrieved product: \(productName!)")
-            print("Price of retrieved product: \(price!)")
-            
-            
-            
-            NetworkActivityIndicatorManager.networkOperationFinished()
-            
-//            self.showAlert(alert: self.alertForProductRetrievalInfo(result: result))
-            
-          
-            
-            
-             
-        })
-        
-        
-        
-    }
-    
-    func purchase(purchase : RegisteredPurchase) {
-        print(#function)
-        NetworkActivityIndicatorManager.NetworkOperationStarted()
-        SwiftyStoreKit.purchaseProduct(bundleID + "." + purchase.rawValue, completion: {
-            result in
-            NetworkActivityIndicatorManager.networkOperationFinished()
-            
-            if case .success(let product) = result {
-                
-                self.mapOverlayViewToBeRemovedAfterPurchase.isHidden = true
-                
-                if product.needsFinishTransaction {
-                    
-                    SwiftyStoreKit.finishTransaction(product.transaction)
-                }
-                
-                
-//                self.showAlert(alert: self.alertForPurchaseResult(result: result))
-                
-            } else if case .error(let error) = result {
-                print("There was an error --- \(error)")
-            }
-        })
-    }
-    
-    
-    func restorePurchases() {
-        NetworkActivityIndicatorManager.NetworkOperationStarted()
-        SwiftyStoreKit.restorePurchases(atomically: true, completion: {
-            result in
-            NetworkActivityIndicatorManager.networkOperationFinished()
-            
-            for product in result.restoredProducts {
-                if product.needsFinishTransaction {
-                    SwiftyStoreKit.finishTransaction(product.transaction)
-                    print("Purchase restored")
-                }
-            }
-            
-//            self.showAlert(alert: self.alertForRestorePurchases(result: result))
-            
-        })
-    }
-    
-    
-    func verifyReceipt() {
-        NetworkActivityIndicatorManager.NetworkOperationStarted()
-        SwiftyStoreKit.verifyReceipt(using: sharedSecret as! ReceiptValidator, completion: {
-            result in
-            NetworkActivityIndicatorManager.networkOperationFinished()
-            
-            self.showAlert(alert: self.alertForVerifyReceipt(result: result))
-            
-            if case .error(let error) = result {
-                if case .noReceiptData = error {
-                    
-                    self.refreshReceipt()
-                    
-                }
-            }
-            
-        })
-        
-    }
-    
-    func verifyPurcahse(product : RegisteredPurchase) {
-        NetworkActivityIndicatorManager.NetworkOperationStarted()
-        SwiftyStoreKit.verifyReceipt(using: sharedSecret as! ReceiptValidator, completion: {
-            
-            result in
-            NetworkActivityIndicatorManager.networkOperationFinished()
-            
-            switch result{
-            case .success(let receipt):
-                
-                let productID = self.bundleID + "." + product.rawValue
-                
-//                if product == .autoRenewable {
-//                    let purchaseResult = SwiftyStoreKit.verifySubscription(productId: productID, inReceipt: receipt, validUntil: Date())
-//                    self.showAlert(alert: self.alertForVerifySubscription(result: purchaseResult))
-//                    
-//                }
-//                else {
-//                    let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: productID, inReceipt: receipt)
-//                    self.showAlert(alert: self.alertForVerifyPurchase(result: purchaseResult))
-//                    
-//                }
-            case .error(let error):
-                self.showAlert(alert: self.alertForVerifyReceipt(result: result))
-                if case .noReceiptData = error {
-                    self.refreshReceipt()
-                    
-                }
-                
-            }
-            
-            
-        })
-        
-    }
-    func refreshReceipt() {
-        SwiftyStoreKit.refreshReceipt(completion: {
-            result in
-            
-            self.showAlert(alert: self.alertForRefreshRecepit(result: result))
-            
-        })
-        
-    }
-
-//end of IAP
-    
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var linksTableView: UITableView!
     @IBOutlet weak var theMapView: MKMapView!
@@ -231,18 +45,15 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var parameters: Parameters = [:]
     
     @IBOutlet weak var mapOverlayViewToBeRemovedAfterPurchase: UIView!
+
+    @IBOutlet weak var labelOverlay: UIView!
     
-//IAP - purchase button
-    @IBAction func enableMapAfterPurchaseButton(_ sender: Any) {
-        print(#function)
-        purchase(purchase: .enablemap)
-    }
+    @IBOutlet weak var mapoverlayBTN: UIButton!
     
     
     
-    
-    
-    
+    // Create this globally
+    let defaults = UserDefaults.standard
     
     
     
@@ -253,8 +64,46 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         print("Entered ViewDidLoad")
         super.viewDidLoad()
         
-        print("Getting info for enable map")
-        getInfo(purchase: .enablemap)
+        
+        if(SKPaymentQueue.canMakePayments()) {
+            print("IAP is enabled, loading")
+            let productID: NSSet = NSSet(objects: "com.kennybatista.findr.enablemap")
+            let request: SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
+            request.delegate = self
+            request.start()
+        } else {
+            print("please enable IAPS")
+        }
+        
+        
+        
+        
+        let blurEffectForMap = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let blurEffectViewForMap = UIVisualEffectView(effect: blurEffectForMap)
+        blurEffectViewForMap.frame = mapOverlayViewToBeRemovedAfterPurchase.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mapOverlayViewToBeRemovedAfterPurchase.addSubview(blurEffectViewForMap)
+        
+        
+        let blurEffectForLabel = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        let blurEffectViewForLabel = UIVisualEffectView(effect: blurEffectForLabel)
+        blurEffectViewForLabel.frame = labelOverlay.bounds
+        //        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        labelOverlay.addSubview(blurEffectViewForLabel)
+        
+        
+        if !defaults.bool(forKey: "com.kennybatista.findr.enablemap") {
+            // IAP not purchased - so prevent the user from using features until they pay
+            
+            mapOverlayViewToBeRemovedAfterPurchase.isHidden = false
+            labelOverlay.isHidden = false
+            mapoverlayBTN.isEnabled = true
+        } else {
+            // IAP are purchased - allow users to see
+            mapOverlayViewToBeRemovedAfterPurchase.isHidden = true
+            labelOverlay.isHidden = true
+            mapoverlayBTN.isEnabled = false
+        }
         
         
         
@@ -562,128 +411,149 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
 
 //End of class
-}
-
-
-@available(iOS 9.0, *)
-extension FullContatctVC {
     
-    func alertWithTitle(title : String, message : String) -> UIAlertController {
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        return alert
-        
-    }
-    func showAlert(alert : UIAlertController) {
-        guard let _ = self.presentedViewController else {
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        
-    }
-    func alertForProductRetrievalInfo(result : RetrieveResults) -> UIAlertController {
-        if let product = result.retrievedProducts.first {
-            let priceString = product.localizedPrice!
-            return alertWithTitle(title: product.localizedTitle, message: "\(product.localizedDescription) - \(priceString)")
-            
-        }
-        else if let invalidProductID = result.invalidProductIDs.first {
-            return alertWithTitle(title: "Could not retreive product info", message: "Invalid product identifier: \(invalidProductID)")
-        }
-        else {
-            let errorString = result.error?.localizedDescription ?? "Unknown Error. Please Contact Support"
-            return alertWithTitle(title: "Could not retreive product info" , message: errorString)
-            
-        }
-        
-    }
-//    func alertForPurchaseResult(result : PurchaseResult) -> UIAlertController {
-//        switch result {
-////        case .success(let product):
-////            print("Purchase Succesful: \(product.productId)")
-////            
-////            return alertWithTitle(title: "Thank You", message: "Purchase completed")
-//        case .error(let error):
-//            print("Purchase Failed: \(error)")
-//            switch error {
-//            case .failed(let error):
-//                if (error as NSError).domain == SKErrorDomain {
-//                    return alertWithTitle(title: "Purchase Failed", message: "Check your internet connection or try again later.")
-//                }
-//                else {
-//                    return alertWithTitle(title: "Purchase Failed", message: "Unknown Error. Please Contact Support")
-//                }
-//            case.invalidProductId(let productID):
-//                return alertWithTitle(title: "Purchase Failed", message: "\(productID) is not a valid product identifier")
-////            case .noProductIdentifier:
-////                return alertWithTitle(title: "Purchase Failed", message: "Product not found")
-//            case .paymentNotAllowed:
-//                return alertWithTitle(title: "Purchase Failed", message: "You are not allowed to make payments")
-//                
-//            }
-//        }
-//    }
-//    func alertForRestorePurchases(result : RestoreResults) -> UIAlertController {
-//        if result.restoreFailedProducts.count > 0 {
-//            print("Restore Failed: \(result.restoreFailedProducts)")
-//            return alertWithTitle(title: "Restore Failed", message: "Unknown Error. Please Contact Support")
-//        }
-//        else if result.restoredProducts.count > 0 {
-//            return alertWithTitle(title: "Purchases Restored", message: "All purchases have been restored.")
-//            
-//        }
-//        else {
-//            return alertWithTitle(title: "Nothing To Restore", message: "No previous purchases were made.")
-//        }
-//        
-//    }
-    func alertForVerifyReceipt(result: VerifyReceiptResult) -> UIAlertController {
-        
-        switch result {
-        case.success(let receipt):
-            return alertWithTitle(title: "Receipt Verified", message: "Receipt Verified Remotely")
-        case .error(let error):
-            switch error {
-            case .noReceiptData:
-                return alertWithTitle(title: "Receipt Verification", message: "No receipt data found, application will try to get a new one. Try Again.")
-            default:
-                return alertWithTitle(title: "Receipt verification", message: "Receipt Verification failed")
+    
+    
+    
+  
+    @IBAction func enableMapsBTN(_ sender: Any) {
+        print("enable maps")
+        for product in list {
+            let prodID = product.productIdentifier
+            if(prodID == "com.kennybatista.findr.enablemap") {
+                p = product
+                buyProduct()
             }
         }
     }
-    func alertForVerifySubscription(result: VerifySubscriptionResult) -> UIAlertController {
-        switch result {
-        case .purchased(let expiryDate):
-            return alertWithTitle(title: "Product is Purchased", message: "Product is valid until \(expiryDate)")
-        case .notPurchased:
-            return alertWithTitle(title: "Not purchased", message: "This product has never been purchased")
-        case .expired(let expiryDate):
-            
-            return alertWithTitle(title: "Product Expired", message: "Product is expired since \(expiryDate)")
-        }
+    
+//    @IBAction func btnAddCoins(_ sender: Any) {
+//        for product in list {
+//            let prodID = product.productIdentifier
+//            if(prodID == "seemu.iap.addcoins") {
+//                p = product
+//                buyProduct()
+//            }
+//        }
+//    }
+    
+    @IBAction func btnRestorePurchases(_ sender: Any) {
+        SKPaymentQueue.default().add(self)
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
-    func alertForVerifyPurchase(result : VerifyPurchaseResult) -> UIAlertController {
-        switch result {
-        case .purchased:
-            return alertWithTitle(title: "Product is Purchased", message: "Product will not expire")
-        case .notPurchased:
+    
+    func buyProduct() {
+        print("buy " + p.productIdentifier)
+        let pay = SKPayment(product: p)
+        SKPaymentQueue.default().add(self)
+        SKPaymentQueue.default().add(pay as SKPayment)
+    }
+    
+//    func removeAds() {
+//        lblAd.removeFromSuperview()
+//    }
+//    
+//    func addCoins() {
+//        coins += 50
+//        lblCoinAmount.text = "\(coins)"
+//    }
+    
+    var list = [SKProduct]()
+    var p = SKProduct()
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        print("product request")
+        let myProduct = response.products
+        for product in myProduct {
+            print("product added")
+            print(product.productIdentifier)
+            print(product.localizedTitle)
+            print(product.localizedDescription)
+            print(product.price)
             
-            return alertWithTitle(title: "Product not purchased", message: "Product has never been purchased")
-            
-            
+            list.append(product)
         }
         
+        mapoverlayBTN.isEnabled = true
+//        outAddCoins.isEnabled = true
+//        outRestorePurchases.isEnabled = true
     }
-    func alertForRefreshRecepit(result : RefreshReceiptResult) -> UIAlertController {
-        
-        switch result {
-        case .success(let receiptData):
-            return alertWithTitle(title: "Receipt Refreshed", message: "Receipt refreshed successfully")
-        case .error(let error):
-            return alertWithTitle(title: "Receipt refresh failed", message: "Receipt refresh failed")
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        print("transactions restored")
+        for transaction in queue.transactions {
+            let t: SKPaymentTransaction = transaction
+            let prodID = t.payment.productIdentifier as String
+            
+            switch prodID {
+            case "com.kennybatista.findr.enablemap":
+                print("enable maps")
+                enableMap()
+//            case "seemu.iap.addcoins":
+//                print("add coins to account")
+//                addCoins()
+            default:
+                print("IAP not found")
+            }
         }
     }
     
+    func enableMap(){
+        mapOverlayViewToBeRemovedAfterPurchase.isHidden = true
+        labelOverlay.isHidden = true
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        print("add payment")
+        
+        for transaction: AnyObject in transactions {
+            let trans = transaction as! SKPaymentTransaction
+            print(trans.error)
+            
+            switch trans.transactionState {
+            case .purchased:
+                print("buy ok, unlock IAP HERE")
+                print(p.productIdentifier)
+                
+                let prodID = p.productIdentifier
+                switch prodID {
+                case "com.kennybatista.findr.enablemap":
+                    print("enable maps")
+                    enableMap()
+                    // Upon the successful purchase of your IAP you set the key to true
+                    defaults.set(true, forKey: "com.kennybatista.findr.enablemap")
+                    UserDefaults.standard.synchronize()
+                    //  case "seemu.iap.addcoins":
+//                    print("add coins to account")
+//                    addCoins()
+                default:
+                    print("IAP not found")
+                }
+                queue.finishTransaction(trans)
+            case .failed:
+                print("buy error")
+                queue.finishTransaction(trans)
+                break
+            default:
+                print("Default")
+                break
+            }
+        }
+    }
+
+
+    
+    
+    
+    
 }
+
+
+
+
+
+
+
+
+
 
