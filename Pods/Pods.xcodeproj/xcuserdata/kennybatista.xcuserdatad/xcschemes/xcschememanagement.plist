@@ -19,17 +19,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Find.you.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>SwiftyJSON.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SwiftyStoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -42,7 +42,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>57BEBE03300CABEB1B897D9121E2F959</key>
+		<key>1FDFE14C453C9DDCD6E02BDAE2D90F96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,17 +52,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>91F30B8CFC45C044565DC7B652ED9EB0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9EFE4C70245EE2857D336B8B9FA4E825</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DE93C13EC48075273D3DD7659678C3D2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DF6D067878B8AB7B343C1E453AA57573</key>
+		<key>C5B80060FE8C664DF08841000F41D515</key>
 		<dict>
 			<key>primary</key>
 			<true/>

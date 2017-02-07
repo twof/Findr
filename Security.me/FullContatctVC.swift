@@ -12,15 +12,15 @@ import Alamofire
 import MapKit
 import AlamofireImage
 import AlamofireNetworkActivityIndicator
-import MessageUI
 import SafariServices
 import StoreKit
+import MessageUI
 
 
 let sharedSecret = "9252bdd1aa974e3c8413e4913de34bae"
 
 @available(iOS 9.0, *)
-class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMessageComposeViewControllerDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, MFMailComposeViewControllerDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
 
   
 
@@ -145,14 +145,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // feedback or help action button
         let helpOrFeedbackAction = UIAlertAction(title: "Feedback", style: .default) { (UIAlertAction) in
-            if (MFMessageComposeViewController.canSendText()) {
-                let controller = MFMessageComposeViewController()
-                controller.body = "Hello team Findr! I've got something to tell you: "
-                controller.recipients = ["13477920858"]
-                controller.messageComposeDelegate = self
-                self.present(controller, animated: true, completion: nil)
-            }
-        }
+            if MFMailComposeViewController.canSendMail() {
+                let mail = MFMailComposeViewController()
+                mail.mailComposeDelegate = self
+                mail.setToRecipients(["findrappusa@gmail.com"])
+                mail.setMessageBody("<p>Hello Team Findr! I've got something to tell you ...</p>", isHTML: true)
+                
+                self.present(mail, animated: true)
+            } else {
+                // show failure alert
+            }        }
         
         // cancel action button
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -190,10 +192,14 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
-    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        // handle sms screen actions
-        self.dismiss(animated: true, completion: nil)
+    //Start compose email
+ 
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
+    
+    //end compose email
 
     
     
