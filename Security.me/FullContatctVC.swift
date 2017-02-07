@@ -44,11 +44,16 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var parameters: Parameters = [:]
     
-    @IBOutlet weak var mapOverlayViewToBeRemovedAfterPurchase: UIView!
+    
 
-    @IBOutlet weak var labelOverlay: UIView!
+    @IBOutlet weak var mapOverlayViewToBeRemovedAfterPurchase: UIImageView!
+    
+    @IBOutlet weak var labelOverlay: UIImageView!
+    
     
     @IBOutlet weak var mapoverlayBTN: UIButton!
+    
+    @IBOutlet weak var labelOverlayBTN: UIButton!
     
     
     
@@ -60,6 +65,8 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
 //[ViewDidLoad]
+    
+    
     override func viewDidLoad() {
         print("Entered ViewDidLoad")
         super.viewDidLoad()
@@ -76,33 +83,21 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         
-        
-        
-        let blurEffectForMap = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
-        let blurEffectViewForMap = UIVisualEffectView(effect: blurEffectForMap)
-        blurEffectViewForMap.frame = mapOverlayViewToBeRemovedAfterPurchase.bounds
-//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapOverlayViewToBeRemovedAfterPurchase.addSubview(blurEffectViewForMap)
-        
-        
-        let blurEffectForLabel = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
-        let blurEffectViewForLabel = UIVisualEffectView(effect: blurEffectForLabel)
-        blurEffectViewForLabel.frame = labelOverlay.bounds
-        //        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        labelOverlay.addSubview(blurEffectViewForLabel)
-        
+
         
         if !defaults.bool(forKey: "com.kennybatista.findr.enablemap") {
             // IAP not purchased - so prevent the user from using features until they pay
             
             mapOverlayViewToBeRemovedAfterPurchase.isHidden = false
             labelOverlay.isHidden = false
-            mapoverlayBTN.isEnabled = true
+            mapoverlayBTN.isEnabled = false
+            labelOverlayBTN.isEnabled = false
         } else {
             // IAP are purchased - allow users to see
             mapOverlayViewToBeRemovedAfterPurchase.isHidden = true
+            mapoverlayBTN.isHidden = true
+            labelOverlayBTN.isHidden = true
             labelOverlay.isHidden = true
-            mapoverlayBTN.isEnabled = false
         }
         
         
@@ -117,10 +112,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             "email" : "\(searchTextField.text)"
         ]
         
-        imageSource.append("Placeholder Image")
+        imageSource.append("No Image")
         images.append("https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")
-        linksSource.append("Placeholder until search")
-        linksArray.append("www.placeholder.com")
+        linksSource.append("No image until search")
+        linksArray.append("www.presssearchfirst.com")
     }
     
     
@@ -169,10 +164,21 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             })
         }
         
+        let restorePurchasesButton = UIAlertAction(title: "Restore In-App-Purchases", style: .default, handler: { UIAlertAction in
+            if (SKPaymentQueue.canMakePayments()) {
+                SKPaymentQueue.default().restoreCompletedTransactions()
+                
+//                let alert = UIAlertController(title: "Restoring", message: "Your purchases will be restored", preferredStyle: .alert)
+//                self.present(alert, animated: true, completion: nil)
+            }
+            
+        })
+        
         
         // add action buttons to alert controller
         alertController.addAction(helpOrFeedbackAction)
         alertController.addAction(rateButton)
+        alertController.addAction(restorePurchasesButton)
         alertController.addAction(cancelAction)
         
         // present the controller
@@ -415,6 +421,17 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     
+    
+    @IBAction func enableMapsandLocationBTN(_ sender: Any) {
+        print("enable maps")
+        for product in list {
+            let prodID = product.productIdentifier
+            if(prodID == "com.kennybatista.findr.enablemap") {
+                p = product
+                buyProduct()
+            }
+        }
+    }
   
     @IBAction func enableMapsBTN(_ sender: Any) {
         print("enable maps")
@@ -475,8 +492,8 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         mapoverlayBTN.isEnabled = true
-//        outAddCoins.isEnabled = true
-//        outRestorePurchases.isEnabled = true
+        labelOverlayBTN.isEnabled = true
+        
     }
     
     func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
@@ -500,7 +517,11 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func enableMap(){
         mapOverlayViewToBeRemovedAfterPurchase.isHidden = true
+        mapoverlayBTN.isHidden = true
+        labelOverlayBTN.isHidden = true
         labelOverlay.isHidden = true
+
+        
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
@@ -511,23 +532,24 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             print(trans.error)
             
             switch trans.transactionState {
-            case .purchased:
+            case .purchased, .restored:
                 print("buy ok, unlock IAP HERE")
                 print(p.productIdentifier)
                 
                 let prodID = p.productIdentifier
                 switch prodID {
-                case "com.kennybatista.findr.enablemap":
-                    print("enable maps")
-                    enableMap()
-                    // Upon the successful purchase of your IAP you set the key to true
-                    defaults.set(true, forKey: "com.kennybatista.findr.enablemap")
-                    UserDefaults.standard.synchronize()
-                    //  case "seemu.iap.addcoins":
-//                    print("add coins to account")
-//                    addCoins()
-                default:
-                    print("IAP not found")
+                    case "com.kennybatista.findr.enablemap":
+                        print("enable maps")
+                        enableMap()
+                        SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                        // Upon the successful purchase of your IAP you set the key to true
+                        defaults.set(true, forKey: "com.kennybatista.findr.enablemap")
+                        UserDefaults.standard.synchronize()
+                        //  case "seemu.iap.addcoins":
+    //                    print("add coins to account")
+    //                    addCoins()
+                    default:
+                        print("IAP not found")
                 }
                 queue.finishTransaction(trans)
             case .failed:
