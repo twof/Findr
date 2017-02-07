@@ -219,18 +219,16 @@
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q1e-W0-Lkk">
                                                 <rect key="frame" x="25" y="869" width="325" height="196"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4S-ov-H1a">
-                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="196"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <state key="normal" title="Enable Map"/>
-                                                        <connections>
-                                                            <action selector="enableMapAfterPurchaseButton:" destination="C0b-xe-yew" eventType="touchUpInside" id="IK4-4v-9T2"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             </view>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4S-ov-H1a">
+                                                <rect key="frame" x="25" y="869" width="325" height="196"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Enable Map"/>
+                                                <connections>
+                                                    <action selector="enableMapAfterPurchaseButton:" destination="C0b-xe-yew" eventType="touchUpInside" id="IK4-4v-9T2"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -307,7 +305,7 @@
                         <outlet property="imagesCollectionView" destination="hBg-Xx-rg6" id="zca-hX-TQP"/>
                         <outlet property="linksTableView" destination="Sad-K2-GKs" id="MSK-4f-fD0"/>
                         <outlet property="locationLabel" destination="ZD6-bP-Nvj" id="xDS-wq-4Pn"/>
-                        <outlet property="mapOverlayViewToBeRemovedAfterPurchase" destination="Q1e-W0-Lkk" id="ytw-fl-f0i"/>
+                        <outlet property="mapOverlayViewToBeRemovedAfterPurchase" destination="Q1e-W0-Lkk" id="ogo-uz-96L"/>
                         <outlet property="nameLabel" destination="uZl-av-vfg" id="mSm-IK-6Q5"/>
                         <outlet property="searchButtonOutlet" destination="ZRP-eh-6W8" id="tzc-PS-cuY"/>
                         <outlet property="searchTextField" destination="Mgr-wh-WFQ" id="VgC-nf-8SE"/>
