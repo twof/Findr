@@ -114,7 +114,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         imageSource.append("No Image")
         images.append("https://openclipart.org/image/2400px/svg_to_png/177482/ProfilePlaceholderSuit.png")
-        linksSource.append("No image until search")
+        linksSource.append("Links retrieved")
         linksArray.append("www.presssearchfirst.com")
     }
     
@@ -328,6 +328,10 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 case .failure(let error):
                     print(error)
                     print("There is an error")
+                    let alertController = UIAlertController(title: "😢|😀", message: "Invalid e-mail, or we haven't found data on you!", preferredStyle: .alert)
+                    let okayAction = UIAlertAction(title: "Aww/Woohoo!", style: .default, handler: nil)
+                    alertController.addAction(okayAction)
+                    self.present(alertController, animated: true, completion: nil)
                     
                 }
                 
