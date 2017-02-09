@@ -30,7 +30,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rML-uv-XDp" userLabel="contentview">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1095"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hB8-Qj-S1D">
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hB8-Qj-S1D">
                                                 <rect key="frame" x="8" y="19" width="39" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="39" id="KfO-9e-JFH"/>
@@ -39,6 +39,17 @@
                                                 <state key="normal" image="help"/>
                                                 <connections>
                                                     <action selector="helpButtonAction:" destination="C0b-xe-yew" eventType="touchUpInside" id="iwB-0p-Yr1"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eBj-fz-PfJ">
+                                                <rect key="frame" x="49" y="23" width="25" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="25" id="Bos-3F-X4M"/>
+                                                    <constraint firstAttribute="height" constant="25" id="qFM-uv-JYt"/>
+                                                </constraints>
+                                                <state key="normal" image="facebookShare"/>
+                                                <connections>
+                                                    <action selector="shareOnFacebook:" destination="C0b-xe-yew" eventType="touchUpInside" id="Bcy-oB-Qfq"/>
                                                 </connections>
                                             </button>
                                             <imageView userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" image="Email field" translatesAutoresizingMaskIntoConstraints="NO" id="HKs-Rx-Kh9">
@@ -253,6 +264,17 @@
                                                     <action selector="enableMapsBTN:" destination="C0b-xe-yew" eventType="touchUpInside" id="pBt-6K-NwU"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfI-g1-wuk">
+                                                <rect key="frame" x="82" y="23" width="25" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="25" id="7vP-0Y-7zS"/>
+                                                    <constraint firstAttribute="height" constant="25" id="mNX-5k-Lut"/>
+                                                </constraints>
+                                                <state key="normal" image="twitter share"/>
+                                                <connections>
+                                                    <action selector="shareOnTwitter:" destination="C0b-xe-yew" eventType="touchUpInside" id="FFD-ny-3m3"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -262,8 +284,10 @@
                                             <constraint firstItem="Sad-K2-GKs" firstAttribute="width" secondItem="gCC-Ro-kpU" secondAttribute="width" id="3aq-oC-aYF"/>
                                             <constraint firstItem="rDg-fM-Vwg" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="-35" id="4VH-7N-eax"/>
                                             <constraint firstItem="HKs-Rx-Kh9" firstAttribute="top" secondItem="hB8-Qj-S1D" secondAttribute="bottom" constant="18" id="4oy-qh-xgU"/>
+                                            <constraint firstItem="eBj-fz-PfJ" firstAttribute="leading" secondItem="rML-uv-XDp" secondAttribute="leading" constant="49" id="5x9-Sw-qa5"/>
                                             <constraint firstItem="j4S-ov-H1a" firstAttribute="trailing" secondItem="akb-4d-yyL" secondAttribute="trailing" id="7IW-Sd-Gab"/>
                                             <constraint firstItem="gCC-Ro-kpU" firstAttribute="width" secondItem="5We-IC-Jrw" secondAttribute="width" id="7LP-sx-yBj"/>
+                                            <constraint firstItem="eBj-fz-PfJ" firstAttribute="top" secondItem="rML-uv-XDp" secondAttribute="top" constant="23" id="8HF-1e-SlT"/>
                                             <constraint firstItem="ZD6-bP-Nvj" firstAttribute="leading" secondItem="5We-IC-Jrw" secondAttribute="leading" constant="21" id="8fW-U5-oUc"/>
                                             <constraint firstItem="akb-4d-yyL" firstAttribute="trailing" secondItem="aEX-Gc-5cY" secondAttribute="trailing" id="960-hI-6V0"/>
                                             <constraint firstItem="gCC-Ro-kpU" firstAttribute="leading" secondItem="5We-IC-Jrw" secondAttribute="leading" id="9Tw-9N-swh"/>
@@ -282,6 +306,7 @@
                                             <constraint firstItem="hBg-Xx-rg6" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="64" id="OR0-FF-8Nz"/>
                                             <constraint firstItem="Sg9-xa-OZv" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="-30" id="P35-k2-tYf"/>
                                             <constraint firstItem="ZD6-bP-Nvj" firstAttribute="top" secondItem="5We-IC-Jrw" secondAttribute="bottom" constant="-30" id="Q6l-Cs-AEI"/>
+                                            <constraint firstItem="jfI-g1-wuk" firstAttribute="leading" secondItem="hB8-Qj-S1D" secondAttribute="trailing" constant="35" id="QVR-EW-MZ7"/>
                                             <constraint firstItem="gCC-Ro-kpU" firstAttribute="trailing" secondItem="5We-IC-Jrw" secondAttribute="trailing" id="SOI-Gb-zna"/>
                                             <constraint firstItem="hBg-Xx-rg6" firstAttribute="width" secondItem="5We-IC-Jrw" secondAttribute="width" id="SOr-Ay-Bcz"/>
                                             <constraint firstItem="aEX-Gc-5cY" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="T1Y-fP-E8n"/>
@@ -289,6 +314,7 @@
                                             <constraint firstItem="HKs-Rx-Kh9" firstAttribute="leading" secondItem="rML-uv-XDp" secondAttribute="leading" constant="25" id="Uk1-cd-drh"/>
                                             <constraint firstItem="Mgr-wh-WFQ" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="UqS-LU-ZQn"/>
                                             <constraint firstItem="j4S-ov-H1a" firstAttribute="centerX" secondItem="rML-uv-XDp" secondAttribute="centerX" id="VC1-JF-gfr"/>
+                                            <constraint firstItem="jfI-g1-wuk" firstAttribute="top" secondItem="rML-uv-XDp" secondAttribute="top" constant="23" id="Xmk-LB-Hk0"/>
                                             <constraint firstItem="j4S-ov-H1a" firstAttribute="leading" secondItem="akb-4d-yyL" secondAttribute="leading" id="bDQ-XG-6kC"/>
                                             <constraint firstItem="aEX-Gc-5cY" firstAttribute="width" secondItem="gCC-Ro-kpU" secondAttribute="width" id="cti-yI-Y6S"/>
                                             <constraint firstItem="j4S-ov-H1a" firstAttribute="width" secondItem="akb-4d-yyL" secondAttribute="width" id="dWV-40-MNF"/>
@@ -368,7 +394,9 @@
         <image name="Phone background" width="375" height="1000"/>
         <image name="Social Profile" width="325" height="317"/>
         <image name="blurredImage" width="4500" height="3000"/>
+        <image name="facebookShare" width="128" height="128"/>
         <image name="help" width="24" height="24"/>
         <image name="placeholder" width="2400" height="2149"/>
+        <image name="twitter share" width="128" height="128"/>
     </resources>
 </document>

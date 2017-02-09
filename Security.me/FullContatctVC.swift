@@ -15,6 +15,7 @@ import AlamofireNetworkActivityIndicator
 import SafariServices
 import StoreKit
 import MessageUI
+import Social
 
 
 let sharedSecret = "9252bdd1aa974e3c8413e4913de34bae"
@@ -62,7 +63,40 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     
+    @IBAction func shareOnFacebook(_ sender: Any) {
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
+            let fbShare:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            let itunes = URL(string: "http://apple.co/2kSz5bL")
+            fbShare.add(itunes)
+            self.present(fbShare, animated: true, completion: nil)
+            
+        } else {
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Facebook account to share.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+
+    }
     
+    @IBAction func shareOnTwitter(_ sender: Any) {
+        if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter) {
+            
+            let tweetShare:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            let itunes = URL(string: "http://apple.co/2kSz5bL")
+            tweetShare.add(itunes)
+            self.present(tweetShare, animated: true, completion: nil)
+            
+        } else {
+            
+            let alert = UIAlertController(title: "Accounts", message: "Please login to a Twitter account to tweet.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+
+    }
     
 //[ViewDidLoad]
     
