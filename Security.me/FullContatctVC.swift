@@ -573,7 +573,7 @@ class FullContatctVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         for transaction: AnyObject in transactions {
             let trans = transaction as! SKPaymentTransaction
-            print(trans.error)
+            print(trans.error!)
             
             switch trans.transactionState {
             case .purchased, .restored:
