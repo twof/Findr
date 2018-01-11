@@ -1,10 +1,10 @@
 # Find.you
 ## Part of the Make School Summer Academy 3-Day Appathon
 
-####What is it?
+#### What is it?
 Find.you has two built in sections. Section one uses the FullContact API to gather information and images based on an e-mail. Section two takes a password as an input and then tells you if it was hacked and if it was how many times it was shared. 
 
-####How do they work?
+#### How do they work?
 Both APIs go out in the internet and crawl the web to gather information based on the e-mail and password. 
 
 #### How to use:
